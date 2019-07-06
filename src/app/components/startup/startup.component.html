@@ -1,0 +1,32 @@
+<div class="columns is-centered">
+  <div class="column is-half">
+    <div class="contain animated fadeIn">
+      <div class="field">
+        <label class="label">Select drive computer</label>
+        <div class="control">
+          <div class="select">
+            <select (change)="portChange($event)" [formControl]="selectedPort">
+              <option value="">Choose one...</option>
+              <option *ngFor="let port of dataService.ports;" [value]="port.comName">{{port.comName}} - {{port.manufacturer}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field animated fadeIn" [hidden]="!selectedPort.value">
+        <label class="label">Enter Code</label>
+        <div class="is-size-1 has-text-centered codes" (click)="codeInteracted($event)">
+          <a data-id="1">&spades;</a>
+          <a data-id="2">&hearts;</a>
+          <a data-id="3">&clubs;</a>
+          <a data-id="4">&diams;</a>
+        </div>
+      </div>
+      <div class="field animated fadeIn" [hidden]="!codes.includes(code)">
+        <div class="control" style="margin-top: 6em;">
+          <label class="label animated fadeIn" *ngIf="dataService.state">Connected to drive controller</label>
+          <button class="button is-primary is-large is-fullwidth" (click)="start()">{{dataService.state ? 'Proceed' : 'Connect'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Product Sans";
+  src: url(assets/Google-Sans-Font/GoogleSans-Regular.ttf) format("truetype");
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

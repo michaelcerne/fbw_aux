@@ -1,0 +1,8 @@
+.codes a:hover {
+  color: #3273E2;
+  outline: none;
+}
+
+.codes a:not(:last-child) {
+  margin-right: 1em;
+}

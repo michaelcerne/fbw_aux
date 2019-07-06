@@ -1,0 +1,11 @@
+<section>
+  <div [ngClass]="{'animated slower infinite flash': !dataService.state}">
+    <fa-icon [icon]="dataService.state ? faLink : faSlash" size="lg"></fa-icon>
+  </div>
+  <div>
+    <p class="is-size-3">FBW</p>
+  </div>
+  <div>
+    <p class="is-size-5"><fa-icon [icon]="faClock"></fa-icon> {{dateNow | date:'shortTime'}}</p>
+  </div>
+</section>
