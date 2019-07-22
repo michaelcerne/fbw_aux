@@ -6,20 +6,18 @@ import { ElectronService } from '../providers/electron.service';
 })
 export class DataService {
 
+  private VALID_STATUS_COMMANDS = ['TH', 'BR', 'ST'];
   public serialPort;
   public parser;
   public ports: Array<any>;
   public state = false;
-  public ready: boolean;
+  public ready = false;
+  public status = {};
+  public dateNow: number;
+  public heartbeat: number;
 
   constructor(private electronService: ElectronService) {
-    this.ready = false;
-    setInterval(() => {
-      console.log(this.ready)
-      if (this.ready) {
-        this.updateStatus();
-      }
-    }, 250);
+    setInterval(this.updateStatus.bind(this), 100);
   }
 
   private handleError(err) {
@@ -38,7 +36,6 @@ export class DataService {
 
   public connect(comName: string) {
     if (this.state) {
-      this.ready = false;
       this.close();
     }
     this.serialPort = new this.electronService.serialPort(comName, {
@@ -48,7 +45,7 @@ export class DataService {
     this.serialPort.on('open', () => {
       this.state = this.serialPort.isOpen;
     });
-    this.parser.on('data', this.onData);
+    this.parser.on('data', this.onData.bind(this));
   }
 
   public open() {
@@ -69,18 +66,35 @@ export class DataService {
   }
 
   public write(data: string) {
+    console.log(`Write: ${data}`);
     this.serialPort.write(data);
   }
 
   public updateStatus() {
-    this.write('DE:\n');
+    this.dateNow = +new Date;
+    if (this.ready) {
+      this.write('DE:\n');
+    }
   }
 
-  private onData(data) {
+  private onData(data: string) {
+    this.dateNow = +new Date;
+    this.heartbeat = +new Date();
     if (data === 'READY') {
       this.ready = true;
     }
-    console.log(this.ready, data);
+    if (data.includes(':')) {
+      const command = [
+        data.substring(0, data.indexOf(':')), // Command
+        data.substring(data.indexOf(':') + 1) // Value
+      ];
+      if (this.VALID_STATUS_COMMANDS.includes(command[0])) {
+        this.status[command[0]] = Number(command[1]) !== NaN ? Number(command[1]) : command[1];
+      }
+    } else {
+      console.log(`Non-status command got: ${data}`);
+    }
+    console.log(this.status);
   }
 
 }

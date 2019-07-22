@@ -6,6 +6,7 @@
     <p class="is-size-3">FBW</p>
   </div>
   <div>
-    <p class="is-size-5"><fa-icon [icon]="faClock"></fa-icon> {{dateNow | date:'shortTime'}}</p>
+    <p class="is-size-5"><fa-icon [icon]="faHourglass"></fa-icon> {{roundToTens(dataService.dateNow - dataService.heartbeat) || 'NA'}}</p>
+    <p class="is-size-5"><fa-icon [icon]="faClock"></fa-icon> {{dataService.dateNow | date:'shortTime'}}</p>
   </div>
 </section>

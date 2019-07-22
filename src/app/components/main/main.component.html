@@ -1,3 +1,1 @@
-<p>
-  main works!
-</p>
+<p *ngFor="let i of dataService.status | keyvalue" (click)="dataService.write(i.key + ':' + (i.value + 1) + '\n')">{{i.key}}: {{i.value}}</p>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { faLink, faSlash, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faSlash, faClock, faHourglass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-topbar',
@@ -9,17 +9,17 @@ import { faLink, faSlash, faClock } from '@fortawesome/free-solid-svg-icons';
 })
 export class TopbarComponent implements OnInit {
 
-  dateNow: Date;
   faLink = faLink;
   faSlash = faSlash;
   faClock = faClock;
+  faHourglass = faHourglass;
 
   constructor(public dataService: DataService) { }
 
   ngOnInit() {
-    setInterval(() => {
-      this.dateNow = new Date;
-    }, 1000);
   }
 
+  roundToTens(N: number) {
+    return Math.ceil(N / 10) * 10;
+  }
 }
